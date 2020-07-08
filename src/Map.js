@@ -4,8 +4,11 @@ import * as geolib from "geolib";
 import RoomTwoToneIcon from "@material-ui/icons/RoomTwoTone";
 import { deepPurple } from "@material-ui/core/colors";
 import Grow from "@material-ui/core/Grow";
+import { useSelector, useDispatch } from "react-redux";
+import { getCommunities, getSelectedCommunity, getSelectedCommunityId, getCommunityByIndex } from "./redux/selectors";
+import { selectCommunity } from "./redux/actions";
 
-const Marker = ({ community, setCenter, setCommunity, isSelected }) => {
+const Marker = ({ index, setCenter, isSelected }) => {
   const defaultColor = 900;
   const hoverColor = 400;
   const defaultSize = "2em";
@@ -13,11 +16,13 @@ const Marker = ({ community, setCenter, setCommunity, isSelected }) => {
 
   const [color, setColor] = useState(isSelected ? hoverColor : defaultColor);
   const [size, setSize] = useState(isSelected ? hoverSize : defaultSize);
+  const dispatch = useDispatch();
+  const community = useSelector(getCommunityByIndex(index));
 
   return (
     // <Grow in={isHovering}>
       <RoomTwoToneIcon
-        onClick={() => {setCenter(community.lat, community.lng); setCommunity(community)}}
+        onClick={() => {setCenter(community.lat, community.lng); dispatch(selectCommunity(community.community_id))}}
         onMouseEnter={() => {
           setColor(hoverColor);
           setSize(hoverSize);
@@ -35,7 +40,12 @@ const Marker = ({ community, setCenter, setCommunity, isSelected }) => {
   );
 };
 
-export default function Map({ communities, zoom, setCommunity, selectedCommunity }) {
+export default function Map({ zoom }) {
+  const selectedCommunity = useSelector(getSelectedCommunity);
+  const selectedCommunityId = useSelector(getSelectedCommunityId);
+  console.log(selectedCommunityId)
+
+  const communities = useSelector(getCommunities);
   const mapRef = useRef();
   let center = [0, 0];
 
@@ -51,14 +61,13 @@ export default function Map({ communities, zoom, setCommunity, selectedCommunity
     center = [geoCenter.latitude, geoCenter.longitude];
   }
 
-  const markers = communities.map((c) => (
+  const markers = communities.map((c, i) => (
     <Marker
       lat={c.lat}
       lng={c.lng}
-      community={c}
+      index={i}
       key={c.name}
       setCenter={(lat, lng) => mapRef.current.panTo({ lat, lng })}
-      setCommunity={setCommunity}
       isSelected={selectedCommunity ? selectedCommunity.community_id === c.community_id : false}
     />
   ));
