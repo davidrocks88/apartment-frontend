@@ -7,10 +7,12 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import Carousel from 'react-material-ui-carousel'
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
+    minWidth: 300,
+    paddingBottom: 0
   },
   bullet: {
     display: "inline-block",
@@ -24,19 +26,34 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   media: {
-    height: 140,
+    height: 180,
   },
 });
+
+function ImageCarousel({images}) {
+  const classes = useStyles();
+  return (
+    <Carousel
+      autoPlay={false}
+      indicators={false}
+      animation={"fade"}>
+      {images.map(i => 
+        (<CardMedia
+        className={classes.media}
+        image={i}
+        title="Community Image"
+        key={i}
+      />)
+      )}
+    </Carousel>
+  )
+}
 
 export default function CommunityCard(props) {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardMedia
-        className={classes.media}
-        image={props.community.images[0]}
-        title="Community Image"
-      />
+      <ImageCarousel images={props.community.images} />
       <CardContent>
         <Typography variant="h5" component="h2">
           {props.community.name}
@@ -44,15 +61,18 @@ export default function CommunityCard(props) {
         <Typography className={classes.pos} color="textSecondary">
           {props.community.address}
         </Typography>
-        <Typography variant="body2" component="p">
+        {/* <Typography variant="body2" component="p">
           {props.community.count} units
-        </Typography>
-      </CardContent>
-      <CardActions>
+        </Typography> */}
         <Button size="small">
           <a href={props.community.url}>Go to Site</a>
         </Button>
-      </CardActions>
+      </CardContent>
+      {/* <CardActions>
+        <Button size="small">
+          <a href={props.community.url}>Go to Site</a>
+        </Button>
+      </CardActions> */}
     </Card>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./App.css";
 import { Grid, Typography } from "@material-ui/core";
 import Sidebar from "./Sidebar/Sidebar";
@@ -7,6 +7,8 @@ import Map from "./Map";
 import useAxios from "axios-hooks";
 
 function App() {
+  const [selectedCommunity, setCommunity] = useState(undefined);
+
   const [{ data, loading, error }] = useAxios(
     "http://localhost:3001/communities"
   );
@@ -24,10 +26,10 @@ function App() {
           <Typography variant="h5" component="h1">
             Communities
           </Typography>
-          <Sidebar communities={data.communities} />
+          <Sidebar setCommunity={setCommunity} selectedCommunity={selectedCommunity} communities={data.communities} />
         </Grid>
         <Grid item xs={9}>
-          <Map communities={data.communities} zoom={5} />
+          <Map setCommunity={setCommunity} communities={data.communities} zoom={5} selectedCommunity={selectedCommunity}/>
         </Grid>
       </Grid>
     </div>

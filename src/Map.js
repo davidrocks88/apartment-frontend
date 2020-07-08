@@ -1,13 +1,41 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import * as geolib from "geolib";
 import RoomTwoToneIcon from "@material-ui/icons/RoomTwoTone";
+import { deepPurple } from "@material-ui/core/colors";
+import Grow from "@material-ui/core/Grow";
 
-const Marker = ({ community, setCenter }) => {
-  return <RoomTwoToneIcon onClick={() => setCenter(community.lat, community.lng)} />;
+const Marker = ({ community, setCenter, setCommunity, isSelected }) => {
+  const defaultColor = 900;
+  const hoverColor = 400;
+  const defaultSize = "2em";
+  const hoverSize = "2.5em";
+
+  const [color, setColor] = useState(isSelected ? hoverColor : defaultColor);
+  const [size, setSize] = useState(isSelected ? hoverSize : defaultSize);
+
+  return (
+    // <Grow in={isHovering}>
+      <RoomTwoToneIcon
+        onClick={() => {setCenter(community.lat, community.lng); setCommunity(community)}}
+        onMouseEnter={() => {
+          setColor(hoverColor);
+          setSize(hoverSize);
+        }}
+        onMouseLeave={() => {
+            if (!isSelected) {
+                setColor(defaultColor);
+                setSize(defaultSize);
+            }
+        }}
+
+        style={{ color: deepPurple[color], fontSize: size }}
+      />
+    // </Grow>
+  );
 };
 
-export default function Map({ communities, zoom }) {
+export default function Map({ communities, zoom, setCommunity, selectedCommunity }) {
   const mapRef = useRef();
   let center = [0, 0];
 
@@ -30,8 +58,15 @@ export default function Map({ communities, zoom }) {
       community={c}
       key={c.name}
       setCenter={(lat, lng) => mapRef.current.panTo({ lat, lng })}
+      setCommunity={setCommunity}
+      isSelected={selectedCommunity ? selectedCommunity.community_id === c.community_id : false}
     />
   ));
+
+  if (selectedCommunity) {
+      mapRef.current.panTo({lat: selectedCommunity.lat, lng: selectedCommunity.lng})
+      mapRef.current.setZoom(8);
+  }
 
   return (
     // Important! Always set the container height explicitly
