@@ -43,7 +43,6 @@ const Marker = ({ index, setCenter, isSelected }) => {
 export default function Map({ zoom }) {
   const selectedCommunity = useSelector(getSelectedCommunity);
   const selectedCommunityId = useSelector(getSelectedCommunityId);
-  console.log(selectedCommunityId)
 
   const communities = useSelector(getCommunities);
   const mapRef = useRef();
