@@ -1,19 +1,40 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Grid, Typography } from "@material-ui/core";
 import Sidebar from "./Sidebar/Sidebar";
 import Map from "./Map";
 
 import useAxios from "axios-hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCommunitiesBegin, fetchCommunitiesEnd } from "./redux/actions";
+import Axios from "axios";
+import { getStatus, getCommunities } from "./redux/selectors";
 
 function App() {
-  const [selectedCommunity, setCommunity] = useState(undefined);
+  const dispatch = useDispatch();
 
-  const [{ data, loading, error }] = useAxios(
-    "http://localhost:3001/communities"
-  );
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error!</p>;
+  useEffect(() => {
+    dispatch(fetchCommunitiesBegin());
+    Axios.get("http://localhost:3001/communities")
+      .then((response) => {
+        dispatch(fetchCommunitiesEnd(true, response.data.communities));
+      })
+      .catch((err) => {
+        dispatch(fetchCommunitiesEnd(false));
+      });
+  }, []);
+  const status = useSelector(getStatus)
+
+    switch (status) {
+      case "WAITING":
+        return <p>Loading...</p>;
+        break;
+      case "ERROR":
+        return <p>Error!</p>
+      default:
+        break;
+    }
+
 
   return (
     <div style={{ flexGrow: 1 }}>
@@ -26,10 +47,12 @@ function App() {
           <Typography variant="h5" component="h1">
             Communities
           </Typography>
-          <Sidebar setCommunity={setCommunity} selectedCommunity={selectedCommunity} communities={data.communities} />
+          <Sidebar />
         </Grid>
         <Grid item xs={9}>
-          <Map setCommunity={setCommunity} communities={data.communities} zoom={5} selectedCommunity={selectedCommunity}/>
+          <Map
+            zoom={5}
+          />
         </Grid>
       </Grid>
     </div>
