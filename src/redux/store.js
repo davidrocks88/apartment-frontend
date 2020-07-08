@@ -1,4 +1,4 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 
 import fetchCommunities from './reducers/communitiesFetch'
 import selectCommunity from './reducers/selectCommunity';

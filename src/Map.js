@@ -3,9 +3,8 @@ import GoogleMapReact from "google-map-react";
 import * as geolib from "geolib";
 import RoomTwoToneIcon from "@material-ui/icons/RoomTwoTone";
 import { deepPurple } from "@material-ui/core/colors";
-import Grow from "@material-ui/core/Grow";
 import { useSelector, useDispatch } from "react-redux";
-import { getCommunities, getSelectedCommunity, getSelectedCommunityId, getCommunityByIndex } from "./redux/selectors";
+import { getCommunities, getSelectedCommunity, getCommunityByIndex } from "./redux/selectors";
 import { selectCommunity } from "./redux/actions";
 
 const Marker = ({ index, setCenter, isSelected }) => {
@@ -20,7 +19,6 @@ const Marker = ({ index, setCenter, isSelected }) => {
   const community = useSelector(getCommunityByIndex(index));
 
   return (
-    // <Grow in={isHovering}>
       <RoomTwoToneIcon
         onClick={() => {setCenter(community.lat, community.lng); dispatch(selectCommunity(community.community_id))}}
         onMouseEnter={() => {
@@ -36,14 +34,11 @@ const Marker = ({ index, setCenter, isSelected }) => {
 
         style={{ color: deepPurple[color], fontSize: size }}
       />
-    // </Grow>
   );
 };
 
 export default function Map({ zoom }) {
   const selectedCommunity = useSelector(getSelectedCommunity);
-  const selectedCommunityId = useSelector(getSelectedCommunityId);
-
   const communities = useSelector(getCommunities);
   const mapRef = useRef();
   let center = [0, 0];

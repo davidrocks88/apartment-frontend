@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { Grid, Typography } from "@material-ui/core";
 import Sidebar from "./Sidebar/Sidebar";
 import Map from "./Map";
 
-import useAxios from "axios-hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommunitiesBegin, fetchCommunitiesEnd } from "./redux/actions";
 import Axios from "axios";
-import { getStatus, getCommunities } from "./redux/selectors";
+import { getStatus } from "./redux/selectors";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,13 +21,12 @@ function App() {
       .catch((err) => {
         dispatch(fetchCommunitiesEnd(false));
       });
-  }, []);
+  }, [dispatch]);
   const status = useSelector(getStatus)
 
     switch (status) {
       case "WAITING":
         return <p>Loading...</p>;
-        break;
       case "ERROR":
         return <p>Error!</p>
       default:

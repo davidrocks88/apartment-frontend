@@ -25,7 +25,7 @@ const SidebarItem = ({ hc, index }) => {
       onMouseLeave={() => {
         if (!isSelected) setRaised(false);
       }}
-      elevation={raised || isSelected ? 3 : 0}
+      elevation={raised || isSelected ? 4 : 0}
       onClick={() => dispatch(selectCommunity(community.community_id))}
     >
       <CommunityCard community={community} key={community.community_id} card />
@@ -47,6 +47,7 @@ function Sidebar() {
       refs.current[selectedCommunityId].current.scrollIntoView({
         behavior: "smooth",
         block: "start",
+        inline: "center"
       });
     }
   });
