@@ -52,7 +52,10 @@ function Sidebar() {
     }
   });
 
-  return communities.map((c, index) => (
+  return ( 
+  <div>
+    <div style={{height: "1em"}}></div>
+  {communities.map((c, index) => (
     <div ref={refs.current[c.community_id]}>
       <SidebarItem
         isSelected={selectedCommunityId === c.community_id}
@@ -60,7 +63,9 @@ function Sidebar() {
         key={c.community_id}
       />
     </div>
-  ));
+  ))}
+  </div>
+  )
 }
 
 export default Sidebar;
