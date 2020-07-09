@@ -17,7 +17,7 @@ export default function MapPopover({ community }) {
       gridThickness: 0,
       includeZero: false,
       tickLength: 0,
-      labelFormatter: (e) => `$${e.value}`,
+      labelFormatter: (e) => `$${e.value.toLocaleString('en-us')}`,
       maximum: community.averagePrices.reduce((prev, curr) => Math.max(prev, curr)) + 100,
       minimum: community.averagePrices.reduce((prev, curr) => Math.min(prev, curr)) - 100,
     },
