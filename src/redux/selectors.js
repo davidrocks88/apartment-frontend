@@ -15,3 +15,12 @@ export const getSelectedCommunity = state => {
   }
 }
 export const getCommunityByIndex = index => state => state.fetchCommunities.communities[index];
+export const getCommunityById = community_id => state => {
+  const communities = getCommunities(state);
+  if (communities) {
+   const matches = communities.filter(c=>c.community_id === community_id);
+   if (matches) {
+     return matches[0];
+   }
+  }
+}

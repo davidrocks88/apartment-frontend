@@ -7,10 +7,13 @@ import HeaderBar from "./HeaderBar";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommunitiesBegin, fetchCommunitiesEnd } from "./redux/actions";
-import Axios from "axios";
-import { getStatus, getCommunityByIndex } from "./redux/selectors";
+// import Axios from "axios";
+import { getStatus } from "./redux/selectors";
 import addPrices from "./utils/data.js";
-import communities from './utils/res/communities'
+import communities from "./utils/res/communities";
+
+import { Switch, Route } from "react-router-dom";
+import CommunityPage from "./CommunityPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,14 +21,14 @@ function App() {
   useEffect(() => {
     dispatch(fetchCommunitiesBegin());
     dispatch(fetchCommunitiesEnd(true, addPrices(communities.communities)));
-  //   Axios.get("http://localhost:3001/communities")
-  //     .then((response) => {
-  //       const communities = addPrices(response.data.communities);
-  //       dispatch(fetchCommunitiesEnd(true, communities));
-  //     })
-  //     .catch((err) => {
-  //       dispatch(fetchCommunitiesEnd(false));
-  //     });
+    //   Axios.get("http://localhost:3001/communities")
+    //     .then((response) => {
+    //       const communities = addPrices(response.data.communities);
+    //       dispatch(fetchCommunitiesEnd(true, communities));
+    //     })
+    //     .catch((err) => {
+    //       dispatch(fetchCommunitiesEnd(false));
+    //     });
   }, [dispatch]);
   const status = useSelector(getStatus);
 
@@ -55,7 +58,18 @@ function App() {
             <Sidebar />
           </Grid>
           <Grid item xs={9}>
-            <Map zoom={5} />
+            <Switch>
+              <Route exact path="/">
+                <Map zoom={5} />
+              </Route>
+              {/* <Route path="/communities">
+                <CommunityPage />
+              </Route> */}
+              <Route path="/communities/:communityId?">
+                <CommunityPage />
+              </Route>
+              v
+            </Switch>
           </Grid>
         </Grid>
       </div>

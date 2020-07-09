@@ -47,25 +47,24 @@ function Sidebar() {
       refs.current[selectedCommunityId].current.scrollIntoView({
         behavior: "smooth",
         block: "start",
-        inline: "center"
+        inline: "center",
       });
     }
   });
 
-  return ( 
-  <div>
-    <div style={{height: "1em"}}></div>
-  {communities.map((c, index) => (
-    <div ref={refs.current[c.community_id]}>
-      <SidebarItem
-        isSelected={selectedCommunityId === c.community_id}
-        index={index}
-        key={c.community_id}
-      />
+  return (
+    <div>
+      <div style={{ height: "1em" }}></div>
+      {communities.map((c, index) => (
+        <div ref={refs.current[c.community_id]} key={c.community_id}>
+          <SidebarItem
+            isSelected={selectedCommunityId === c.community_id}
+            index={index}
+          />
+        </div>
+      ))}
     </div>
-  ))}
-  </div>
-  )
+  );
 }
 
 export default Sidebar;
