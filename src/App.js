@@ -10,23 +10,24 @@ import { fetchCommunitiesBegin, fetchCommunitiesEnd } from "./redux/actions";
 import Axios from "axios";
 import { getStatus, getCommunityByIndex } from "./redux/selectors";
 import addPrices from "./utils/data.js";
+import communities from './utils/res/communities'
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchCommunitiesBegin());
-    Axios.get("http://localhost:3001/communities")
-      .then((response) => {
-        const communities = addPrices(response.data.communities);
-        dispatch(fetchCommunitiesEnd(true, communities));
-      })
-      .catch((err) => {
-        dispatch(fetchCommunitiesEnd(false));
-      });
+    dispatch(fetchCommunitiesEnd(true, communities.communities));
+  //   Axios.get("http://localhost:3001/communities")
+  //     .then((response) => {
+  //       const communities = addPrices(response.data.communities);
+  //       dispatch(fetchCommunitiesEnd(true, communities));
+  //     })
+  //     .catch((err) => {
+  //       dispatch(fetchCommunitiesEnd(false));
+  //     });
   }, [dispatch]);
   const status = useSelector(getStatus);
-  const c = useSelector(getCommunityByIndex(0));
 
   switch (status) {
     case "NONE":

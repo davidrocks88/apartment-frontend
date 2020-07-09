@@ -1,4 +1,4 @@
-import React, { useRef, useState, useDebugValue } from "react";
+import React, { useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import * as geolib from "geolib";
 import RoomTwoToneIcon from "@material-ui/icons/RoomTwoTone";
