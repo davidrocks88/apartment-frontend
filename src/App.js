@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchCommunitiesBegin());
-    dispatch(fetchCommunitiesEnd(true, communities.communities));
+    dispatch(fetchCommunitiesEnd(true, addPrices(communities.communities)));
   //   Axios.get("http://localhost:3001/communities")
   //     .then((response) => {
   //       const communities = addPrices(response.data.communities);

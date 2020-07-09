@@ -3,11 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useSelector } from 'react-redux';
 import {getStatus} from './redux/selectors';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,9 +48,14 @@ export default function HeaderBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h5" className={classes.title}>
-            Price Tracker
+            Apartment Price Tracker
           </Typography>
             {statusItem}
+          <Typography variant="h5">
+            David Bernstein
+          </Typography>
+          <IconButton color="inherit" href="https://www.linkedin.com/in/dbernstein7/" target="_blank"><LinkedInIcon /></IconButton>
+          <IconButton color="inherit" href="https://github.com/davidrocks88/apartment-frontend" target="_blank"><GitHubIcon /></IconButton>
         </Toolbar>
       </AppBar>
     </div>
