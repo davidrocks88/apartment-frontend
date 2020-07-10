@@ -3,14 +3,19 @@ import { useParams } from "react-router-dom";
 import { getCommunityById, getSelectedCommunity } from "./redux/selectors";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCommunity } from "./redux/actions";
+import Grid from "@material-ui/core/Grid";
 
-import { makeStyles } from "@material-ui/core/styles";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
+import {
+  makeStyles,
+  GridList,
+  GridListTile,
+  Typography,
+} from "@material-ui/core";
 import GoogleMapReact from "google-map-react";
 
 import RoomTwoToneIcon from "@material-ui/icons/RoomTwoTone";
 import { deepPurple } from "@material-ui/core/colors";
+import ApartmentTable from "./ApartmentTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "nowrap",
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: "translateZ(0)",
-    width: "80em",
   },
   title: {
     color: theme.palette.primary.light,
@@ -48,10 +52,15 @@ export default function CommunityPage() {
 
   if (parmasCommunity && !selectedCommunity) {
     dispatch(selectCommunity(communityId));
-  }
-  else if ((!parmasCommunity && communityId) ||
-           (!parmasCommunity && !selectedCommunity)) {
-    return <h1 style={{marginTop: "3em"}}>ERROR, cannot find community {communityId}</h1>;
+  } else if (
+    (!parmasCommunity && communityId) ||
+    (!parmasCommunity && !selectedCommunity)
+  ) {
+    return (
+      <h1 style={{ marginTop: "3em" }}>
+        ERROR, cannot find community {communityId}
+      </h1>
+    );
   } else if (!communityId) {
     if (selectCommunity) {
       community = selectedCommunity;
@@ -61,40 +70,55 @@ export default function CommunityPage() {
   if (mapRef && mapRef.current) {
     mapRef.current.panTo({
       lat: community.lat,
-      lng: community.lng
+      lng: community.lng,
     });
   }
 
   return (
     <div>
-      <div style={{ height: "3em" }}></div>
-      <h1>Community:</h1>
-      <h2>{community.community_id}</h2>
+      <div style={{ height: "4em" }}></div>
+      <Typography variant="h2">{community.name}</Typography>
+      <Typography variant="h4">{community.address}</Typography>
+      <br />
 
-      <div className={classes.root}>
-        <GridList cellHeight={400} spacing={2} className={classes.gridList}>
-          {community.images.map((img, i) => (
-            <GridListTile height={200} key={img}>
-              <img height={200} src={img} alt={`${community.name} ${i}`} />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
+      <Grid container spacing={2} style={{flexGrow: 1, borderWidth: 1}}>
+        <Grid item xs={4} style={{overflow: "auto", height: 400}}>
+          {/* <div style={{ width: "30em" }} className={classes.flexChild}> */}
+            <ApartmentTable />
+          {/* </div> */}
+        </Grid>
+
+        <Grid item xs={6}>
+        <div className={classes.root}>
+          <GridList cellHeight={400} spacing={2} className={classes.gridList}>
+            {community.images.map((img, i) => (
+              <GridListTile height={200} key={img}>
+                <img height={200} src={img} alt={`${community.name} ${i}`} />
+              </GridListTile>
+            ))}
+          </GridList>
+        </div>
+        </Grid>
+      </Grid>
 
       <div style={{ height: "50em", width: "50em" }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyDxGdw5GtzpAP9Kfri9NCE_LxP5YxpYTAk" }}
-        defaultCenter={[community.lat, community.lng]}
-        defaultZoom={15}
-        distanceToMouse={() => {}}
-        yesIWantToUseGoogleMapApiInternals
-        onGoogleApiLoaded={({ map }) => {
-          mapRef.current = map;
-        }}
-      >
-        <RoomTwoToneIcon style={{color: deepPurple[400]}} lat={community.lat} lng={community.lng} />
-      </GoogleMapReact>
-    </div>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: "AIzaSyDxGdw5GtzpAP9Kfri9NCE_LxP5YxpYTAk" }}
+          defaultCenter={[community.lat, community.lng]}
+          defaultZoom={15}
+          distanceToMouse={() => {}}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map }) => {
+            mapRef.current = map;
+          }}
+        >
+          <RoomTwoToneIcon
+            style={{ color: deepPurple[400] }}
+            lat={community.lat}
+            lng={community.lng}
+          />
+        </GoogleMapReact>
+      </div>
     </div>
   );
 }

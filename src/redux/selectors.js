@@ -24,3 +24,7 @@ export const getCommunityById = community_id => state => {
    }
   }
 }
+
+export const getApartmentsByCommunityId = community_id => state => {
+  return state.apartmentsFetch[community_id] || [];
+}

@@ -2,6 +2,8 @@ import {
   FETCH_COMMUNITIES_BEGIN,
   FETCH_COMMUNITIES_END,
   SELECT_COMMUNITY,
+  FETCH_APARTMENTS_BEGIN,
+  FETCH_APARTMENTS_END,
 } from "./actionTypes";
 
 export function fetchCommunitiesBegin() {
@@ -23,6 +25,22 @@ export function fetchCommunitiesEnd(success, communities = []) {
 export function selectCommunity(id) {
   return {
     type: SELECT_COMMUNITY,
-    id
+    id,
+  };
+}
+
+export function fetchApartmentsBegin() {
+  return {
+    type: FETCH_APARTMENTS_BEGIN,
+  };
+}
+
+export function fetchApartmentsEnd(success, apartments = []) {
+  return {
+    type: FETCH_APARTMENTS_END,
+    payload: {
+      success,
+      apartments,
+    },
   };
 }
