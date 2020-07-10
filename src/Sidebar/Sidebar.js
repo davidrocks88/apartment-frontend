@@ -9,14 +9,18 @@ import {
   getSelectedCommunityId,
 } from "../redux/selectors";
 import { selectCommunity } from "../redux/actions";
+import {useHistory, useLocation} from 'react-router-dom';
+
 
 const SidebarItem = ({ hc, index }) => {
   const community = useSelector(getCommunityByIndex(index));
   const selectedCommunityId = useSelector(getSelectedCommunityId);
   const isSelected = selectedCommunityId === community.community_id;
   const [raised, setRaised] = useState(isSelected);
-
   const dispatch = useDispatch();
+  const history = useHistory();
+  const {pathname} = useLocation();
+
   return (
     <Paper
       style={{ width: "auto", padding: 10, margin: 20 }}
@@ -26,7 +30,14 @@ const SidebarItem = ({ hc, index }) => {
         if (!isSelected) setRaised(false);
       }}
       elevation={raised || isSelected ? 4 : 0}
-      onClick={() => dispatch(selectCommunity(community.community_id))}
+      onClick={() => {
+        dispatch(selectCommunity(community.community_id));
+        console.log(`communities/${community.community_id}`);
+        console.log(pathname);
+        if (pathname.includes("/communities")) {
+          history.replace(`/communities/${community.community_id}`);
+        }
+      }}
     >
       <CommunityCard community={community} key={community.community_id} card />
     </Paper>

@@ -8,6 +8,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Carousel from 'react-material-ui-carousel'
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -52,6 +53,11 @@ export function ImageCarousel({images}) {
 
 export default function CommunityCard(props) {
   const classes = useStyles();
+  const history = useHistory();
+
+  const goToCommunityPage = communityId => {
+    history.replace(`/communities/${communityId}`)
+  }
   return (
     <Card className={classes.root}>
       <ImageCarousel images={props.community.images} />
@@ -65,8 +71,9 @@ export default function CommunityCard(props) {
         {/* <Typography variant="body2" component="p">
           {props.community.count} units
         </Typography> */}
-        <Button size="small">
-          <a href={props.community.url}>Go to Site</a>
+        <Button size="small" onClick={()=>goToCommunityPage(props.community.community_id)}>
+          {/* <a href={props.community.url}>Go to Site</a> */}
+          Learn More
         </Button>
       </CardContent>
       {/* <CardActions>

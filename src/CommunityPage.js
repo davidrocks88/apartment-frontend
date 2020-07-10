@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { getCommunityById, getSelectedCommunity } from "./redux/selectors";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,6 +7,10 @@ import { selectCommunity } from "./redux/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
+import GoogleMapReact from "google-map-react";
+
+import RoomTwoToneIcon from "@material-ui/icons/RoomTwoTone";
+import { deepPurple } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,18 +42,27 @@ export default function CommunityPage() {
   const dispatch = useDispatch();
   const parmasCommunity = useSelector(getCommunityById(communityId));
   const selectedCommunity = useSelector(getSelectedCommunity);
+  const mapRef = useRef();
 
   let community = parmasCommunity;
 
   if (parmasCommunity && !selectedCommunity) {
     dispatch(selectCommunity(communityId));
   }
-  else if (!parmasCommunity) {
-    return <h1>ERROR, cannot find community {communityId}</h1>;
+  else if ((!parmasCommunity && communityId) ||
+           (!parmasCommunity && !selectedCommunity)) {
+    return <h1 style={{marginTop: "3em"}}>ERROR, cannot find community {communityId}</h1>;
   } else if (!communityId) {
     if (selectCommunity) {
       community = selectedCommunity;
     }
+  }
+
+  if (mapRef && mapRef.current) {
+    mapRef.current.panTo({
+      lat: community.lat,
+      lng: community.lng
+    });
   }
 
   return (
@@ -67,6 +80,21 @@ export default function CommunityPage() {
           ))}
         </GridList>
       </div>
+
+      <div style={{ height: "50em", width: "50em" }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: "AIzaSyDxGdw5GtzpAP9Kfri9NCE_LxP5YxpYTAk" }}
+        defaultCenter={[community.lat, community.lng]}
+        defaultZoom={15}
+        distanceToMouse={() => {}}
+        yesIWantToUseGoogleMapApiInternals
+        onGoogleApiLoaded={({ map }) => {
+          mapRef.current = map;
+        }}
+      >
+        <RoomTwoToneIcon style={{color: deepPurple[400]}} lat={community.lat} lng={community.lng} />
+      </GoogleMapReact>
+    </div>
     </div>
   );
 }

@@ -54,7 +54,7 @@ export default function HeaderBar() {
           >
             <Switch>
               <Route path="/communities/:communityId">
-                <Link to="/map">
+                <Link to="/">
                   <ArrowBackIosRoundedIcon style={{color: "white"}}/>
                 </Link>
               </Route>

@@ -95,7 +95,7 @@ export default function Map({ zoom }) {
     />
   ));
 
-  if (selectedCommunity) {
+  if (selectedCommunity && mapRef && mapRef.current) {
     mapRef.current.panTo({
       lat: selectedCommunity.lat,
       lng: selectedCommunity.lng,
