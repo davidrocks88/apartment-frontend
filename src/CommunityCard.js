@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ImageCarousel({images}) {
+export function ImageCarousel({images}) {
   const classes = useStyles();
   images = images.slice(0, 5);
   return (

@@ -68,7 +68,6 @@ function App() {
               <Route path="/communities/:communityId?">
                 <CommunityPage />
               </Route>
-              v
             </Switch>
           </Grid>
         </Grid>

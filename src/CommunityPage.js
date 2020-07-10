@@ -1,26 +1,72 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { getCommunityById } from "./redux/selectors";
+import { getCommunityById, getSelectedCommunity } from "./redux/selectors";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCommunity } from "./redux/actions";
 
+import { makeStyles } from "@material-ui/core/styles";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
+  gridList: {
+    flexWrap: "nowrap",
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: "translateZ(0)",
+    width: "80em",
+  },
+  title: {
+    color: theme.palette.primary.light,
+  },
+  titleBar: {
+    background:
+      "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
+  },
+}));
+
 export default function CommunityPage() {
+  const classes = useStyles();
+
   const { communityId } = useParams();
   const dispatch = useDispatch();
-  const community = useSelector(getCommunityById(communityId));
+  const parmasCommunity = useSelector(getCommunityById(communityId));
+  const selectedCommunity = useSelector(getSelectedCommunity);
 
-  if (!community) {
-    return <h1>ERROR, cannot find community {communityId}</h1>
-  }
-  else {
+  let community = parmasCommunity;
+
+  if (parmasCommunity && !selectedCommunity) {
     dispatch(selectCommunity(communityId));
+  }
+  else if (!parmasCommunity) {
+    return <h1>ERROR, cannot find community {communityId}</h1>;
+  } else if (!communityId) {
+    if (selectCommunity) {
+      community = selectedCommunity;
+    }
   }
 
   return (
     <div>
-      <div style={{ height: "40em" }}></div>
+      <div style={{ height: "3em" }}></div>
       <h1>Community:</h1>
-      <h2>{communityId}</h2>
+      <h2>{community.community_id}</h2>
+
+      <div className={classes.root}>
+        <GridList cellHeight={400} spacing={2} className={classes.gridList}>
+          {community.images.map((img, i) => (
+            <GridListTile height={200} key={img}>
+              <img height={200} src={img} alt={`${community.name} ${i}`} />
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>
     </div>
   );
 }

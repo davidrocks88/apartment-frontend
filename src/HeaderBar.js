@@ -9,7 +9,8 @@ import { useSelector } from "react-redux";
 import { getStatus } from "./redux/selectors";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import { Link } from "react-router-dom";
+import { Link, Switch, Route } from "react-router-dom";
+import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +44,7 @@ export default function HeaderBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="absolute">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             edge="start"
@@ -51,7 +52,16 @@ export default function HeaderBar() {
             color="inherit"
             aria-label="menu"
           >
-            <MenuIcon />
+            <Switch>
+              <Route path="/communities/:communityId">
+                <Link to="/map">
+                  <ArrowBackIosRoundedIcon style={{color: "white"}}/>
+                </Link>
+              </Route>
+              <Route path="/">
+                <MenuIcon />
+              </Route>
+            </Switch>
           </IconButton>
           <Typography variant="h5" className={classes.title}>
             Apartment Price Tracker
