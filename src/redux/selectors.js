@@ -32,3 +32,5 @@ export const getApartmentsByCommunityId = community_id => state => {
 export const getSelectedApartmentUnit = state => state.apartments.selectedApartment;
 
 export const getShowApartmentUnitModal = state => state.apartments.showModal;
+
+export const getApartmentRoomsFilter = state => state.apartments.roomFilter;

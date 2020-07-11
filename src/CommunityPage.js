@@ -82,7 +82,7 @@ export default function CommunityPage() {
       <br />
 
       <Grid container spacing={2} style={{flexGrow: 1, borderWidth: 1}}>
-        <Grid item xs={4} style={{overflow: "auto", height: 400}}>
+        <Grid item xs={5} style={{overflow: "auto", height: 400}}>
           {/* <div style={{ width: "30em" }} className={classes.flexChild}> */}
             <ApartmentTable />
           {/* </div> */}

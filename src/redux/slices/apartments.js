@@ -4,7 +4,8 @@ const initialState = {
   status: "NONE",
   showModal: false,
   apartments: {},
-  selectedApartment: null
+  selectedApartment: null,
+  roomFilter: -1
 };
 
 const apartmentsSlice = createSlice({
@@ -27,6 +28,9 @@ const apartmentsSlice = createSlice({
     },
     hideApartmentUnitModal(state) {
       state.showModal = false;
+    },
+    filterRooms(state, action) {
+      state.roomFilter = action.payload;
     }
   }
 })
@@ -36,7 +40,8 @@ export const {
   fetchApartmentsEnd,
   selectApartment,
   showApartmentUnitModal,
-  hideApartmentUnitModal
+  hideApartmentUnitModal,
+  filterRooms
 } = apartmentsSlice.actions;
 
 export default apartmentsSlice.reducer;

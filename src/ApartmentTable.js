@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import {
@@ -11,6 +11,8 @@ import {
   Modal,
   Fade,
   Backdrop,
+  Tab,
+  Tabs
 } from "@material-ui/core";
 import {
   getApartmentsByCommunityId,
@@ -19,8 +21,8 @@ import {
 import ApartmentPricePopover from "./ApartmentPricePopover";
 import { getBedroomString, getBathroomString, getSqftString } from './utils/data';
 import { useDispatch, useSelector } from 'react-redux';
-import { getShowApartmentUnitModal } from './redux/selectors';
-import { selectApartment, showApartmentUnitModal, hideApartmentUnitModal } from './redux/slices/apartments';
+import { getShowApartmentUnitModal, getApartmentRoomsFilter } from './redux/selectors';
+import { selectApartment, showApartmentUnitModal, hideApartmentUnitModal, filterRooms } from './redux/slices/apartments';
 
 const useStyles = makeStyles({
   table: {
@@ -42,6 +44,7 @@ export default function ApartmentTable() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const open = useSelector(getShowApartmentUnitModal);
+  const filter = useSelector(getApartmentRoomsFilter);
 
   const handleOpen = (apartment) => {
     dispatch(selectApartment(apartment));
@@ -52,11 +55,26 @@ export default function ApartmentTable() {
     dispatch(hideApartmentUnitModal());
   };
 
+  const handleChange = (_, newValue) => {
+    dispatch(filterRooms(newValue));
+  };
+
   const community_id = useSelector(getSelectedCommunity).community_id;
   const apartments = useSelector(getApartmentsByCommunityId(community_id));
 
+  let filteredApartments = apartments;
+  if (filter >= 0) {
+    filteredApartments = filteredApartments.filter(a=>a.beds === filter);
+  }
+
   return (
     <TableContainer component={Paper} elevation={6}>
+        <Tabs value={filter} variant="fullWidth" onChange={handleChange} aria-label="simple tabs example">
+          <Tab label="All" value={-1} />
+          <Tab label="Studio" value={0}/>
+          <Tab label="1 Bedroom" value={1} />
+          <Tab label="2 Bedrooms" value={2} />
+        </Tabs>
       <Table stickyHeader className={classes.table} aria-label="sticky table">
         <TableHead>
           <TableRow>
@@ -68,7 +86,7 @@ export default function ApartmentTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {apartments.map((apartment) => (
+          {filteredApartments.map((apartment) => (
             <TableRow
               hover
               key={apartment.apartmentNumber}
