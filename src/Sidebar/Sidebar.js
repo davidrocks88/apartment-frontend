@@ -8,7 +8,7 @@ import {
   getCommunityByIndex,
   getSelectedCommunityId,
 } from "../redux/selectors";
-import { selectCommunity } from "../redux/actions";
+import { selectCommunity } from "../redux/slices/communities";
 import {useHistory, useLocation} from 'react-router-dom';
 
 

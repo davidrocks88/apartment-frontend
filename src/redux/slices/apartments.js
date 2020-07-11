@@ -15,8 +15,8 @@ const apartmentsSlice = createSlice({
       state.status = "WAITING";
     },
     fetchApartmentsEnd(state, {payload}) {
-      const {status, apartments} = payload;
-      state.status = status;
+      const {success, apartments} = payload;
+      state.status = success ? "SUCCESS" : "FAILURE";
       state.apartments[apartments[0].community_id] = apartments;
     },
     selectApartment(state, action) {

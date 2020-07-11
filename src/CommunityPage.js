@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { getCommunityById, getSelectedCommunity } from "./redux/selectors";
 import { useSelector, useDispatch } from "react-redux";
-import { selectCommunity } from "./redux/actions";
+import { selectCommunity } from "./redux/slices/communities";
 import Grid from "@material-ui/core/Grid";
 
 import {

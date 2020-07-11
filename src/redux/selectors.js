@@ -1,6 +1,6 @@
-export const getCommunities = state => state.fetchCommunities.communities;
-export const getStatus = state => state.fetchCommunities.status;
-export const getSelectedCommunityId = state => state.selectCommunity.id;
+export const getCommunities = state => state.communities.communities;
+export const getStatus = state => state.communities.status;
+export const getSelectedCommunityId = state => state.communities.selectedCommunityId;
 export const getSelectedCommunity = state => {
   const communities = getCommunities(state);
   const id = getSelectedCommunityId(state);
@@ -14,7 +14,7 @@ export const getSelectedCommunity = state => {
     return undefined;
   }
 }
-export const getCommunityByIndex = index => state => state.fetchCommunities.communities[index];
+export const getCommunityByIndex = index => state => state.communities.communities[index];
 export const getCommunityById = community_id => state => {
   const communities = getCommunities(state);
   if (communities) {

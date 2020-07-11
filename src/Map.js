@@ -9,7 +9,7 @@ import {
   getSelectedCommunity,
   getCommunityByIndex,
 } from "./redux/selectors";
-import { selectCommunity } from "./redux/actions";
+import { selectCommunity } from "./redux/slices/communities";
 import MapPopover from "./MapPopover";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 import { Popover} from "@material-ui/core";
