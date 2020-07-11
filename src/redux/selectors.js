@@ -26,9 +26,9 @@ export const getCommunityById = community_id => state => {
 }
 
 export const getApartmentsByCommunityId = community_id => state => {
-  return state.apartmentsFetch.apartments[community_id] || [];
+  return state.apartments.apartments[community_id] || [];
 }
 
-export const getSelectedApartmentUnit = state => state.apartmentsFetch.selectedApartment;
+export const getSelectedApartmentUnit = state => state.apartments.selectedApartment;
 
-export const getShowApartmentUnitModal = state => state.apartmentsFetch.showModal;
+export const getShowApartmentUnitModal = state => state.apartments.showModal;

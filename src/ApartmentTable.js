@@ -20,7 +20,7 @@ import ApartmentPricePopover from "./ApartmentPricePopover";
 import { getBedroomString, getBathroomString, getSqftString } from './utils/data';
 import { useDispatch, useSelector } from 'react-redux';
 import { getShowApartmentUnitModal } from './redux/selectors';
-import { selectApartment, showApartmentData, hideApartmentData } from './redux/actions';
+import { selectApartment, showApartmentUnitModal, hideApartmentUnitModal } from './redux/slices/apartments';
 
 const useStyles = makeStyles({
   table: {
@@ -42,15 +42,14 @@ export default function ApartmentTable() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const open = useSelector(getShowApartmentUnitModal);
-  // const [open, setOpen] = useState(false);
 
   const handleOpen = (apartment) => {
     dispatch(selectApartment(apartment));
-    dispatch(showApartmentData());
+    dispatch(showApartmentUnitModal());
   };
 
   const handleClose = () => {
-    dispatch(hideApartmentData());
+    dispatch(hideApartmentUnitModal());
   };
 
   const community_id = useSelector(getSelectedCommunity).community_id;

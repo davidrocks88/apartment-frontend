@@ -6,7 +6,9 @@ import Map from "./Map";
 import HeaderBar from "./HeaderBar";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCommunitiesBegin, fetchCommunitiesEnd, fetchApartmentsEnd } from "./redux/actions";
+import { fetchCommunitiesBegin, fetchCommunitiesEnd } from "./redux/actions";
+import { fetchApartmentsEnd } from './redux/slices/apartments';
+
 // import Axios from "axios";
 import { getStatus } from "./redux/selectors";
 import { addPrices, addApartmentPriceHistory } from "./utils/data.js";
@@ -24,7 +26,7 @@ function App() {
     const fixedCommunities = addPrices(communities.communities);
     const fixedApartments = addApartmentPriceHistory(apartments.apartments.sort((a, b)=>a.beds - b.beds), fixedCommunities);
     dispatch(fetchCommunitiesEnd(true, fixedCommunities));
-    dispatch(fetchApartmentsEnd(true, fixedApartments));
+    dispatch(fetchApartmentsEnd({success: true, apartments: fixedApartments}));
     //   Axios.get("http://localhost:3001/communities")
     //     .then((response) => {
     //       const communities = addPrices(response.data.communities);

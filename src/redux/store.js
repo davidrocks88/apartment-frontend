@@ -2,9 +2,11 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import fetchCommunities from './reducers/communitiesFetch'
 import selectCommunity from './reducers/selectCommunity';
-import apartmentsFetch from './reducers/apartmentsFetch';
+import apartmentsReducer from './slices/apartments';
+
 const reducers = {
-  fetchCommunities, selectCommunity, apartmentsFetch
+  fetchCommunities, selectCommunity,
+  apartments: apartmentsReducer
 }
 
 export const store = configureStore({ reducer: reducers })
