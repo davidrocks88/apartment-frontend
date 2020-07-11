@@ -1,6 +1,6 @@
 export const getCommunities = state => state.fetchCommunities.communities;
 export const getStatus = state => state.fetchCommunities.status;
-export const getSelectedCommunityId = state => state.selectCommunity;
+export const getSelectedCommunityId = state => state.selectCommunity.id;
 export const getSelectedCommunity = state => {
   const communities = getCommunities(state);
   const id = getSelectedCommunityId(state);
@@ -26,5 +26,9 @@ export const getCommunityById = community_id => state => {
 }
 
 export const getApartmentsByCommunityId = community_id => state => {
-  return state.apartmentsFetch[community_id] || [];
+  return state.apartmentsFetch.apartments[community_id] || [];
 }
+
+export const getSelectedApartmentUnit = state => state.apartmentsFetch.selectedApartment;
+
+export const getShowApartmentUnitModal = state => state.apartmentsFetch.showModal;

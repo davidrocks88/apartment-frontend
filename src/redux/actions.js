@@ -4,6 +4,9 @@ import {
   SELECT_COMMUNITY,
   FETCH_APARTMENTS_BEGIN,
   FETCH_APARTMENTS_END,
+  SELECT_APARTMENT_UNIT,
+  SHOW_APARTMENT_UNIT_DATA,
+  HIDE_APARTMENT_UNIT_DATA
 } from "./actionTypes";
 
 export function fetchCommunitiesBegin() {
@@ -42,5 +45,24 @@ export function fetchApartmentsEnd(success, apartments = []) {
       success,
       apartments,
     },
+  };
+}
+
+export function selectApartment(apartment) {
+    return {
+        type: SELECT_APARTMENT_UNIT,
+        apartment
+    }
+}
+
+export function showApartmentData() {
+  return {
+    type: SHOW_APARTMENT_UNIT_DATA,
+  };
+}
+
+export function hideApartmentData() {
+  return {
+    type: HIDE_APARTMENT_UNIT_DATA,
   };
 }

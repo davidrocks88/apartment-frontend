@@ -32,8 +32,6 @@ const SidebarItem = ({ hc, index }) => {
       elevation={raised || isSelected ? 4 : 0}
       onClick={() => {
         dispatch(selectCommunity(community.community_id));
-        console.log(`communities/${community.community_id}`);
-        console.log(pathname);
         if (pathname.includes("/communities")) {
           history.replace(`/communities/${community.community_id}`);
         }

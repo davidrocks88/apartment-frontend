@@ -1,3 +1,4 @@
+import React from 'react';
 const _ = require('lodash');
 
 const basePrices = [1000, 1500, 2000, 2500, 1500]
@@ -37,8 +38,36 @@ export function addApartmentPriceHistory(apartments, communities) {
       d.setDate(d.getDate() - i);
       apartmentPrices.push({price: finalPrice, date: d});
     }
+
     apartment.prices = apartmentPrices;
+    apartment.communityName = community.name;
   }))
 
   return apartments;
+}
+
+export function getBedroomString(beds) {
+  switch (beds) {
+    case 0:
+      return "Studio";
+    case 1:
+      return "1 Bedroom";
+    default:
+      return beds + " Bedrooms";
+  }
+}
+
+export function getBathroomString(baths) {
+  switch (baths) {
+    case 0:
+      return "No Bathroom";
+    case 1:
+      return "1 Bathroom";
+    default:
+      return baths + " Bathrooms";
+  }
+}
+
+export function getSqftString(sqft) {
+  return (<div style={{display: "inline"}}>{sqft} ft<sup>2</sup></div>);
 }
