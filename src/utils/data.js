@@ -30,13 +30,15 @@ export function addApartmentPriceHistory(apartments, communities) {
     const price = _.mean(community.averagePrices);
 
     const apartmentPrices = [];
+    const shift = randomNumber(0, 6);
+
     for (let i = 0; i < numApartmentPrices; i++) {
-      const sinusoidalPrice = price + (price * apartmentPriceFluctuationFactor) * Math.sin(2 * Math.PI * i / price);
+      const sinusoidalPrice = price + (price * apartmentPriceFluctuationFactor) * Math.sin(shift + 2 * Math.PI * (i % 7) / 7);
       const withSalt = sinusoidalPrice + randomNumber(-20, 20) + (sinusoidalPrice * factorPerBedroom * apartment.beds);
       const finalPrice = Math.round(withSalt / 10) * 10;
       const d = new Date();
       d.setDate(d.getDate() - i);
-      apartmentPrices.push({price: finalPrice, date: d});
+      apartmentPrices.push({price: finalPrice, date: d.toString()});
     }
 
     apartment.prices = apartmentPrices;
