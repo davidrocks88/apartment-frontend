@@ -12,14 +12,15 @@ import {
   Fade,
   Backdrop,
   Tab,
-  Tabs
+  Tabs,
+  Typography
 } from "@material-ui/core";
 import {
   getApartmentsByCommunityId,
   getSelectedCommunity,
 } from "./redux/selectors";
 import ApartmentPricePopover from "./ApartmentPricePopover";
-import { getBedroomString, getBathroomString, getSqftString } from './utils/data';
+import { getBedroomString, getBathroomString, getSqftString, analyzeApartmentPrices } from './utils/data';
 import { useDispatch, useSelector } from 'react-redux';
 import { getShowApartmentUnitModal, getApartmentRoomsFilter } from './redux/selectors';
 import { selectApartment, showApartmentUnitModal, hideApartmentUnitModal, filterRooms } from './redux/slices/apartments';
@@ -83,6 +84,7 @@ export default function ApartmentTable() {
             <TableCell align="right">Baths</TableCell>
             <TableCell align="right">Size</TableCell>
             <TableCell align="right">Price</TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -105,6 +107,9 @@ export default function ApartmentTable() {
                 {getSqftString(apartment.size)}
               </TableCell>
               <TableCell align="right">${apartment.prices[0].price}</TableCell>
+              <TableCell align="right">
+                <Typography variant="button" style={{color: analyzeApartmentPrices(apartment) > 0 ? "red" : "green"}}>{analyzeApartmentPrices(apartment) > 0 ? "▲" : "▼"} {Math.abs(Math.round(analyzeApartmentPrices(apartment)*10000)/100)}%</Typography>
+                </TableCell>
             </TableRow>
           ))}
         </TableBody>

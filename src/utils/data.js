@@ -73,3 +73,9 @@ export function getBathroomString(baths) {
 export function getSqftString(sqft) {
   return (<div style={{display: "inline"}}>{sqft} ft<sup>2</sup></div>);
 }
+
+export function analyzeApartmentPrices(apartment) {
+  const avg = _.mean(apartment.prices.map(p=>p.price));
+  const currentPrice = [...apartment.prices].sort((a, b) => (new Date(a) - new Date(b)))[0].price;
+  return ((currentPrice - avg) / avg).toPrecision(2);
+}
