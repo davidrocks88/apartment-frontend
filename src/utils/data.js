@@ -26,7 +26,7 @@ export function addPrices(communities) {
 
 export function addApartmentPriceHistory(apartments, communities) {
   apartments.forEach((apartment => {
-    const community = communities.find(c=>c.community_id === apartment.community_id);
+    const community = communities.find(c=>c.id === apartment.communityID);
     const price = _.mean(community.averagePrices);
 
     const apartmentPrices = [];
@@ -78,4 +78,26 @@ export function analyzeApartmentPrices(apartment) {
   const avg = _.mean(apartment.prices.map(p=>p.price));
   const currentPrice = [...apartment.prices].sort((a, b) => (new Date(a) - new Date(b)))[0].price;
   return ((currentPrice - avg) / avg).toPrecision(2);
+}
+
+export function getColorFromPercentage(p) {
+  p = Number(p);
+  if (p > 0) {
+    return "red";
+  } else if (p === 0) {
+    return "grey";
+  } else {
+    return "green";
+  }
+}
+
+export function getIconFromPercentage(p) {
+  p = Number(p);
+  if (p > 0) {
+    return "▲";
+  } else if (p === 0) {
+    return "↔";
+  } else {
+    return "▼";
+  }
 }

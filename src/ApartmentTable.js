@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import {
@@ -13,17 +13,32 @@ import {
   Backdrop,
   Tab,
   Tabs,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import {
   getApartmentsByCommunityId,
   getSelectedCommunity,
 } from "./redux/selectors";
 import ApartmentPricePopover from "./ApartmentPricePopover";
-import { getBedroomString, getBathroomString, getSqftString, analyzeApartmentPrices } from './utils/data';
-import { useDispatch, useSelector } from 'react-redux';
-import { getShowApartmentUnitModal, getApartmentRoomsFilter } from './redux/selectors';
-import { selectApartment, showApartmentUnitModal, hideApartmentUnitModal, filterRooms } from './redux/slices/apartments';
+import {
+  getBedroomString,
+  getBathroomString,
+  getSqftString,
+  analyzeApartmentPrices,
+  getColorFromPercentage,
+  getIconFromPercentage,
+} from "./utils/data";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getShowApartmentUnitModal,
+  getApartmentRoomsFilter,
+} from "./redux/selectors";
+import {
+  selectApartment,
+  showApartmentUnitModal,
+  hideApartmentUnitModal,
+  filterRooms,
+} from "./redux/slices/apartments";
 
 const useStyles = makeStyles({
   table: {
@@ -60,22 +75,27 @@ export default function ApartmentTable() {
     dispatch(filterRooms(newValue));
   };
 
-  const community_id = useSelector(getSelectedCommunity).community_id;
+  const community_id = useSelector(getSelectedCommunity).id;
   const apartments = useSelector(getApartmentsByCommunityId(community_id));
 
   let filteredApartments = apartments;
   if (filter >= 0) {
-    filteredApartments = filteredApartments.filter(a=>a.beds === filter);
+    filteredApartments = filteredApartments.filter((a) => a.beds === filter);
   }
 
   return (
     <TableContainer component={Paper} elevation={6}>
-        <Tabs value={filter} variant="fullWidth" onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="All" value={-1} />
-          <Tab label="Studio" value={0}/>
-          <Tab label="1 Bedroom" value={1} />
-          <Tab label="2 Bedrooms" value={2} />
-        </Tabs>
+      <Tabs
+        value={filter}
+        variant="fullWidth"
+        onChange={handleChange}
+        aria-label="simple tabs example"
+      >
+        <Tab label="All" value={-1} />
+        <Tab label="Studio" value={0} />
+        <Tab label="1 Bedroom" value={1} />
+        <Tab label="2 Bedrooms" value={2} />
+      </Tabs>
       <Table stickyHeader className={classes.table} aria-label="sticky table">
         <TableHead>
           <TableRow>
@@ -108,8 +128,21 @@ export default function ApartmentTable() {
               </TableCell>
               <TableCell align="right">${apartment.prices[0].price}</TableCell>
               <TableCell align="right">
-                <Typography variant="button" style={{color: analyzeApartmentPrices(apartment) > 0 ? "red" : "green"}}>{analyzeApartmentPrices(apartment) > 0 ? "▲" : "▼"} {Math.abs(Math.round(analyzeApartmentPrices(apartment)*10000)/100)}%</Typography>
-                </TableCell>
+                <Typography
+                  variant="button"
+                  style={{
+                    color: getColorFromPercentage(
+                      analyzeApartmentPrices(apartment)
+                    ),
+                  }}
+                >
+                  {getIconFromPercentage(analyzeApartmentPrices(apartment))}{" "}
+                  {Math.abs(
+                    Math.round(analyzeApartmentPrices(apartment) * 10000) / 100
+                  )}
+                  %
+                </Typography>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

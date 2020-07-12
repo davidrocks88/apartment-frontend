@@ -6,7 +6,8 @@ import {
   getSqftString,
 } from "./utils/data";
 import { useSelector } from "react-redux";
-import { getSelectedApartmentUnit } from "./redux/selectors";
+import { getSelectedApartmentUnit, getCommunityById } from "./redux/selectors";
+import {getColorFromPercentage} from './utils/data';
 import CanvasJSReact from "./utils/canvasjs.react";
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const _ = require("lodash");
@@ -30,6 +31,7 @@ function mode(arr){
 
 export default function ApartmentPricePopover() {
   const apartment = useSelector(getSelectedApartmentUnit);
+  const community = useSelector(getCommunityById(apartment.communityID));
   const preDates = [...apartment.prices].map(d => {return {...d, date: new Date(d.date)}});
 
   const prices = [...preDates].sort((a, b) => b - a);
@@ -54,23 +56,28 @@ export default function ApartmentPricePopover() {
         dataPoints: prices.map((p) => {
           return { y: p.price, x: p.date };
         }),
-      },
-      {
-        type: "line",
-        lineDashType: "dot",
-        markerSize: 0,
-        color: "black",
-        dataPoints: [
-          { y: averagePrice, x: prices[0].date },
-          { y: averagePrice, x: prices[prices.length - 1].date, indexLabel: `$${averagePrice.toLocaleString('en-us')}` },
-        ],
-      },
+      }
     ],
   };
 
+  // Only show average if there is enough data
+  const minDataRequiredForAverage = 5;
+  if (options.data[0].dataPoints.length >= minDataRequiredForAverage) {
+    options.data.push({
+      type: "line",
+      lineDashType: "dot",
+      markerSize: 0,
+      color: "black",
+      dataPoints: [
+        { y: averagePrice, x: prices[0].date },
+        { y: averagePrice, x: prices[prices.length - 1].date, indexLabel: `$${averagePrice.toLocaleString('en-us')}` },
+      ],
+    })
+  }
+
   // Make last point red
   const lastPoint = options.data[0].dataPoints[0];
-  lastPoint.color = lastPoint.y > averagePrice ? "red" : "green";
+  lastPoint.color = getColorFromPercentage(lastPoint.y - averagePrice) ;
   lastPoint.markerSize = 20;
   lastPoint.indexLabel = `$${lastPoint.y.toLocaleString("en-us")}`;
 
@@ -80,7 +87,7 @@ export default function ApartmentPricePopover() {
       return { price: d.y, date: d.x, index };
     })
     .sort((a, b) => a.price - b.price);
-  sortedPrices.slice(0, 4).map((p) => {
+  sortedPrices.slice(0, 4).forEach((p) => {
     const pt = options.data[0].dataPoints[p.index];
     pt.color = "green";
     pt.markerType = "cross";
@@ -103,7 +110,7 @@ export default function ApartmentPricePopover() {
   return (
     <Box p={2} style={{ width: "40em", height }}>
       <Typography variant="h5">
-        {apartment.communityName.toUpperCase()} -{" "}
+        {community.name.toUpperCase()} -{" "}
         {apartment.apartmentNumber.toUpperCase()}
       </Typography>
       <Typography variant="h6">

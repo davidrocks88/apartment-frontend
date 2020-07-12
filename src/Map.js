@@ -24,7 +24,7 @@ const Marker = ({ index, setCenter, isSelected }) => {
   const [size, setSize] = useState(isSelected ? hoverSize : defaultSize);
   const dispatch = useDispatch();
   const community = useSelector(getCommunityByIndex(index));
-  const clickMarker = () => dispatch(selectCommunity(community.community_id));
+  const clickMarker = () => dispatch(selectCommunity(community.id));
   return (
     <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
@@ -70,26 +70,21 @@ export default function Map({ zoom }) {
 
   if (communities && communities.length) {
     const geoCenter = geolib.getCenter(
-      communities.map((c) => {
-        return {
-          latitude: c.lat,
-          longitude: c.lng,
-        };
-      })
+      communities.map((c) => c.location)
     );
     center = [geoCenter.latitude, geoCenter.longitude];
   }
 
   const markers = communities.map((c, i) => (
     <Marker
-      lat={c.lat}
-      lng={c.lng}
+      lat={c.location.latitude}
+      lng={c.location.longitude}
       index={i}
       key={c.name}
       setCenter={(lat, lng) => mapRef.current.panTo({ lat, lng })}
       isSelected={
         selectedCommunity
-          ? selectedCommunity.community_id === c.community_id
+          ? selectedCommunity.id === c.id
           : false
       }
     />
@@ -97,8 +92,8 @@ export default function Map({ zoom }) {
 
   if (selectedCommunity && mapRef && mapRef.current) {
     mapRef.current.panTo({
-      lat: selectedCommunity.lat,
-      lng: selectedCommunity.lng,
+      lat: selectedCommunity.location.latitude,
+      lng: selectedCommunity.location.longitude,
     });
     mapRef.current.setZoom(10);
   }

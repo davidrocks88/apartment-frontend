@@ -69,8 +69,8 @@ export default function CommunityPage() {
 
   if (mapRef && mapRef.current) {
     mapRef.current.panTo({
-      lat: community.lat,
-      lng: community.lng,
+      lat: community.location.latitude,
+      lng: community.location.longitude,
     });
   }
 
@@ -104,7 +104,7 @@ export default function CommunityPage() {
       <div style={{ height: "50em", width: "50em" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyDxGdw5GtzpAP9Kfri9NCE_LxP5YxpYTAk" }}
-          defaultCenter={[community.lat, community.lng]}
+          defaultCenter={[community.location.latitude, community.location.longitude]}
           defaultZoom={15}
           distanceToMouse={() => {}}
           yesIWantToUseGoogleMapApiInternals
@@ -114,8 +114,8 @@ export default function CommunityPage() {
         >
           <RoomTwoToneIcon
             style={{ color: deepPurple[400] }}
-            lat={community.lat}
-            lng={community.lng}
+            lat={community.location.latitude}
+            lng={community.location.longitude}
           />
         </GoogleMapReact>
       </div>

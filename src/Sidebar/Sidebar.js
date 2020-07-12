@@ -15,7 +15,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 const SidebarItem = ({ hc, index }) => {
   const community = useSelector(getCommunityByIndex(index));
   const selectedCommunityId = useSelector(getSelectedCommunityId);
-  const isSelected = selectedCommunityId === community.community_id;
+  const isSelected = selectedCommunityId === community.id;
   const [raised, setRaised] = useState(isSelected);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -24,20 +24,20 @@ const SidebarItem = ({ hc, index }) => {
   return (
     <Paper
       style={{ width: "auto", padding: 10, margin: 20 }}
-      key={community.community_id}
+      key={community.id}
       onMouseEnter={() => setRaised(true)}
       onMouseLeave={() => {
         if (!isSelected) setRaised(false);
       }}
       elevation={raised || isSelected ? 4 : 0}
       onClick={() => {
-        dispatch(selectCommunity(community.community_id));
+        dispatch(selectCommunity(community.id));
         if (pathname.includes("/communities")) {
-          history.replace(`/communities/${community.community_id}`);
+          history.replace(`/communities/${community.id}`);
         }
       }}
     >
-      <CommunityCard community={community} key={community.community_id} card />
+      <CommunityCard community={community} key={community.id} card />
     </Paper>
   );
 };
@@ -47,7 +47,7 @@ function Sidebar() {
   const selectedCommunityId = useSelector(getSelectedCommunityId);
 
   const refList = {};
-  communities.map((c) => (refList[c.community_id] = React.createRef()));
+  communities.map((c) => (refList[c.id] = React.createRef()));
 
   const refs = useRef(refList);
 
@@ -65,9 +65,9 @@ function Sidebar() {
     <div>
       <div style={{ height: "1em" }}></div>
       {communities.map((c, index) => (
-        <div ref={refs.current[c.community_id]} key={c.community_id}>
+        <div ref={refs.current[c.id]} key={c.id}>
           <SidebarItem
-            isSelected={selectedCommunityId === c.community_id}
+            isSelected={selectedCommunityId === c.id}
             index={index}
           />
         </div>

@@ -1,24 +1,30 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: "NONE",
   showModal: false,
   apartments: {},
   selectedApartment: null,
-  roomFilter: -1
+  roomFilter: -1,
 };
 
 const apartmentsSlice = createSlice({
-  name: 'apartments',
+  name: "apartments",
   initialState,
   reducers: {
     fetchApartmentsBegin(state) {
       state.status = "WAITING";
     },
-    fetchApartmentsEnd(state, {payload}) {
-      const {success, apartments} = payload;
+    fetchApartmentsEnd(state, { payload }) {
+      const { success, apartments } = payload;
       state.status = success ? "SUCCESS" : "FAILURE";
-      state.apartments[apartments[0].community_id] = apartments;
+      apartments.forEach(
+        (apartment) =>
+          (apartment.prices = apartment.prices.map((p) => {
+            return { price: p.price, date: p.date.toDate() };
+          }))
+      );
+      state.apartments = apartments;
     },
     selectApartment(state, action) {
       state.selectedApartment = action.payload;
@@ -31,9 +37,9 @@ const apartmentsSlice = createSlice({
     },
     filterRooms(state, action) {
       state.roomFilter = action.payload;
-    }
-  }
-})
+    },
+  },
+});
 
 export const {
   fetchApartmentsBegin,
@@ -41,7 +47,7 @@ export const {
   selectApartment,
   showApartmentUnitModal,
   hideApartmentUnitModal,
-  filterRooms
+  filterRooms,
 } = apartmentsSlice.actions;
 
 export default apartmentsSlice.reducer;

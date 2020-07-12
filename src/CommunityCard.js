@@ -71,7 +71,7 @@ export default function CommunityCard(props) {
         {/* <Typography variant="body2" component="p">
           {props.community.count} units
         </Typography> */}
-        <Button size="small" onClick={()=>goToCommunityPage(props.community.community_id)}>
+        <Button size="small" onClick={()=>goToCommunityPage(props.community.id)}>
           {/* <a href={props.community.url}>Go to Site</a> */}
           Learn More
         </Button>

@@ -5,7 +5,7 @@ export const getSelectedCommunity = state => {
   const communities = getCommunities(state);
   const id = getSelectedCommunityId(state);
   if (id && communities.length) {
-    const matches = communities.filter(c=>c.community_id === id);
+    const matches = communities.filter(c=>c.id === id);
     if (matches.length) {
       return matches[0];
     }
@@ -18,7 +18,7 @@ export const getCommunityByIndex = index => state => state.communities.communiti
 export const getCommunityById = community_id => state => {
   const communities = getCommunities(state);
   if (communities) {
-   const matches = communities.filter(c=>c.community_id === community_id);
+   const matches = communities.filter(c=>c.id === community_id);
    if (matches) {
      return matches[0];
    }
@@ -26,7 +26,10 @@ export const getCommunityById = community_id => state => {
 }
 
 export const getApartmentsByCommunityId = community_id => state => {
-  return state.apartments.apartments[community_id] || [];
+  if (state.apartments.status === "SUCCESS") {
+    return state.apartments.apartments.filter(a=>a.communityID === community_id)
+  }
+  else return [];
 }
 
 export const getSelectedApartmentUnit = state => state.apartments.selectedApartment;
