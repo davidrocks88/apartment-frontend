@@ -66,8 +66,7 @@ export default function Map({ zoom }) {
   const selectedCommunity = useSelector(getSelectedCommunity);
   const communities = useSelector(getCommunities);
   const mapRef = useRef();
-  let center = [0, 0];
-
+  let center = [39.8283, -98.5795];
   if (communities && communities.length) {
     const geoCenter = geolib.getCenter(
       communities.map((c) => c.location)

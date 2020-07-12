@@ -9,11 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCommunitiesBegin, fetchCommunitiesEnd } from "./redux/slices/communities";
 import { fetchApartmentsBegin, fetchApartmentsEnd } from './redux/slices/apartments';
 
-// import Axios from "axios";
 import { getStatus } from "./redux/selectors";
-// import { addPrices, addApartmentPriceHistory } from "./utils/data.js";
-// import communities from "./utils/res/communities";
-// import apartments from './utils/res/apartments';
 
 import { Switch, Route } from "react-router-dom";
 import CommunityPage from "./CommunityPage";
@@ -26,9 +22,6 @@ function App() {
   useEffect(() => {
     dispatch(fetchCommunitiesBegin());
     dispatch(fetchApartmentsBegin());
-    // const fixedCommunities = addPrices(communities.communities);
-    // const fixedApartments = addApartmentPriceHistory(apartments.apartments.sort((a, b)=>a.beds - b.beds), fixedCommunities);
-
     getCommunities()
       .then(communities => dispatch(fetchCommunitiesEnd({success: true, communities})))
       .catch(e => fetchCommunitiesEnd({success: false}))
@@ -36,30 +29,18 @@ function App() {
       getApartments()
       .then(apartments => dispatch(fetchApartmentsEnd({success: true, apartments})))
       .catch(e => fetchApartmentsEnd({success: false}))
-
-    
-    // dispatch(fetchCommunitiesEnd({success: true, communities: fixedCommunities}));
-    // dispatch(fetchApartmentsEnd({success: true, apartments: fixedApartments}));
-    //   Axios.get("http://localhost:3001/communities")
-    //     .then((response) => {
-    //       const communities = addPrices(response.data.communities);
-    //       dispatch(fetchCommunitiesEnd(true, communities));
-    //     })
-    //     .catch((err) => {
-    //       dispatch(fetchCommunitiesEnd(false));
-    //     });
   }, [dispatch]);
   const status = useSelector(getStatus);
 
-  switch (status) {
-    case "NONE":
-    case "WAITING":
-      return <HeaderBar />;
-    case "ERROR":
-      return <HeaderBar />;
-    default:
-      break;
-  }
+  // switch (status) {
+  //   case "NONE":
+  //   case "WAITING":
+  //     return <HeaderBar />;
+  //   case "ERROR":
+  //     return <HeaderBar />;
+  //   default:
+  //     break;
+  // }
 
   return (
     <div>

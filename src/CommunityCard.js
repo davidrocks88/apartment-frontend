@@ -9,6 +9,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Carousel from 'react-material-ui-carousel'
 import {useHistory} from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { getStatus } from "./redux/selectors";
 
 const useStyles = makeStyles({
   root: {
@@ -54,13 +56,14 @@ export function ImageCarousel({images}) {
 export default function CommunityCard(props) {
   const classes = useStyles();
   const history = useHistory();
+  const loading = useSelector(getStatus) === "WAITING";
 
   const goToCommunityPage = communityId => {
     history.replace(`/communities/${communityId}`)
   }
   return (
     <Card className={classes.root}>
-      <ImageCarousel images={props.community.images} />
+      {loading ? "hello" : <ImageCarousel images={props.community.images} />}
       <CardContent>
         <Typography variant="h5" component="h2">
           {props.community.name}
@@ -76,11 +79,6 @@ export default function CommunityCard(props) {
           Learn More
         </Button>
       </CardContent>
-      {/* <CardActions>
-        <Button size="small">
-          <a href={props.community.url}>Go to Site</a>
-        </Button>
-      </CardActions> */}
     </Card>
   );
 }
