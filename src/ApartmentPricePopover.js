@@ -100,9 +100,8 @@ export default function ApartmentPricePopover() {
 
   const bestDay = weekday[mode(sortedPrices.slice(0,4).map(p=>p.date.getDay()))];
 
-  const currentPrice = lastPoint.y;
   const difference =
-    Math.round(((currentPrice - averagePrice) * 1000) / averagePrice) / 10;
+    Math.round(((apartment.currentPrice - averagePrice) * 1000) / averagePrice) / 10;
 
   const advice = `${difference > 0 ? "Don't buy" : "Buy"}, currently ${new Intl.NumberFormat('en-us', { maximumSignificantDigits: 3 }).format(Math.abs(
     difference)

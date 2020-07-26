@@ -43,6 +43,11 @@ async function getApartments() {
         const apartments = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
+          const fixedPrices = data.prices.map(p=>{return {price: p.price, date: p.date.toDate().toString()}})
+          fixedPrices.sort((p1, p2)=>(new Date(p2.date)) - (new Date(p1.date)));
+          data.currentPrice = fixedPrices[0].price;
+          data.prices = fixedPrices;
+
           apartments.push(data);
         });
         resolve(apartments);

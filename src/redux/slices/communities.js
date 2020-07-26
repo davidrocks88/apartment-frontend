@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   status: "NONE",
-  communities: [],
+  communities: {},
   selectedCommunityId: null
 };
 
@@ -16,7 +16,9 @@ const communitiesSlice = createSlice({
     fetchCommunitiesEnd(state, {payload}) {
       const {success, communities} = payload;
       state.status = success ? "SUCCESS" : "FAILURE";
-      state.communities = communities;
+      for (let community of communities) {
+        state.communities[community.id] = community;
+      }
     },
     selectCommunity(state, action) {
       state.selectedCommunityId = action.payload;

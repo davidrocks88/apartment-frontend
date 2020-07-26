@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
-import * as geolib from "geolib";
+// import * as geolib from "geolib";
 import RoomTwoToneIcon from "@material-ui/icons/RoomTwoTone";
 import { deepPurple } from "@material-ui/core/colors";
 import { useSelector, useDispatch } from "react-redux";
@@ -67,12 +67,12 @@ export default function Map({ zoom }) {
   const communities = useSelector(getCommunities);
   const mapRef = useRef();
   let center = [39.8283, -98.5795];
-  if (communities && communities.length) {
-    const geoCenter = geolib.getCenter(
-      communities.map((c) => c.location)
-    );
-    center = [geoCenter.latitude, geoCenter.longitude];
-  }
+  // if (communities && communities.length) {
+  //   const geoCenter = geolib.getCenter(
+  //     communities.map((c) => c.location)
+  //   );
+  //   center = [geoCenter.latitude, geoCenter.longitude];
+  // }
 
   const markers = communities.map((c, i) => (
     <Marker

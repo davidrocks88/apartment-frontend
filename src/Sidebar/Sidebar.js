@@ -12,7 +12,7 @@ import {
 import { selectCommunity } from "../redux/slices/communities";
 import { useHistory, useLocation } from "react-router-dom";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { Button, Typography, Card } from "@material-ui/core";
+import {Typography, Card } from "@material-ui/core";
 
 
 const SkeletonItem = () => {
@@ -80,7 +80,7 @@ function Sidebar() {
         inline: "center",
       });
     }
-  }, [loading]);
+  }, [loading, selectedCommunityId]);
 
   const numSkeletons = 10;
 

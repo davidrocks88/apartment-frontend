@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
-import "./App.css";
 import { Grid, Typography } from "@material-ui/core";
 import Sidebar from "./Sidebar/Sidebar";
 import Map from "./Map";
 import HeaderBar from "./HeaderBar";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchCommunitiesBegin, fetchCommunitiesEnd } from "./redux/slices/communities";
 import { fetchApartmentsBegin, fetchApartmentsEnd } from './redux/slices/apartments';
-
-import { getStatus } from "./redux/selectors";
 
 import { Switch, Route } from "react-router-dom";
 import CommunityPage from "./CommunityPage";
@@ -30,17 +27,6 @@ function App() {
       .then(apartments => dispatch(fetchApartmentsEnd({success: true, apartments})))
       .catch(e => fetchApartmentsEnd({success: false}))
   }, [dispatch]);
-  const status = useSelector(getStatus);
-
-  // switch (status) {
-  //   case "NONE":
-  //   case "WAITING":
-  //     return <HeaderBar />;
-  //   case "ERROR":
-  //     return <HeaderBar />;
-  //   default:
-  //     break;
-  // }
 
   return (
     <div>

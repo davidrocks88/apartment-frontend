@@ -1,52 +1,5 @@
-import React from 'react';
-const _ = require('lodash');
-
-const basePrices = [1000, 1500, 2000, 2500, 1500]
-const numPrices = 10;
-const numApartmentPrices = 20;
-const apartmentPriceFluctuationFactor = 1 / 10;
-const factorPerBedroom = 1 / 8;
-
-function randomNumber(min, max) {  
-  return Math.floor(Math.random() * (max - min) + min); 
-}  
-
-export function addPrices(communities) {
-  communities.forEach((c => {
-    const avgPrice = basePrices[randomNumber(0, basePrices.length - 1)];
-    const prices = [];
-    for (let i = 0; i < numPrices; i++) {
-      prices.push(avgPrice + randomNumber(-1 * avgPrice / 10, avgPrice / 10));
-    }
-    c.averagePrices = prices;
-  }))
-
-  return communities;
-}
-
-export function addApartmentPriceHistory(apartments, communities) {
-  apartments.forEach((apartment => {
-    const community = communities.find(c=>c.id === apartment.communityID);
-    const price = _.mean(community.averagePrices);
-
-    const apartmentPrices = [];
-    const shift = randomNumber(0, 6);
-
-    for (let i = 0; i < numApartmentPrices; i++) {
-      const sinusoidalPrice = price + (price * apartmentPriceFluctuationFactor) * Math.sin(shift + 2 * Math.PI * (i % 7) / 7);
-      const withSalt = sinusoidalPrice + randomNumber(-20, 20) + (sinusoidalPrice * factorPerBedroom * apartment.beds);
-      const finalPrice = Math.round(withSalt / 10) * 10;
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      apartmentPrices.push({price: finalPrice, date: d.toString()});
-    }
-
-    apartment.prices = apartmentPrices;
-    apartment.communityName = community.name;
-  }))
-
-  return apartments;
-}
+import React from "react";
+const _ = require("lodash");
 
 export function getBedroomString(beds) {
   switch (beds) {
@@ -71,13 +24,16 @@ export function getBathroomString(baths) {
 }
 
 export function getSqftString(sqft) {
-  return (<div style={{display: "inline"}}>{sqft} ft<sup>2</sup></div>);
+  return (
+    <div style={{ display: "inline" }}>
+      {sqft} ft<sup>2</sup>
+    </div>
+  );
 }
 
 export function analyzeApartmentPrices(apartment) {
-  const avg = _.mean(apartment.prices.map(p=>p.price));
-  const currentPrice = [...apartment.prices].sort((a, b) => (new Date(a) - new Date(b)))[0].price;
-  return ((currentPrice - avg) / avg).toPrecision(2);
+  const avg = _.mean(apartment.prices.map((p) => p.price));
+  return ((apartment.currentPrice - avg) / avg).toPrecision(2);
 }
 
 export function getColorFromPercentage(p) {
@@ -99,5 +55,23 @@ export function getIconFromPercentage(p) {
     return "↔";
   } else {
     return "▼";
+  }
+}
+
+export function getAveragePriceOfApartments(apartments) {
+  if (apartments.length === 0) return [];
+  try {
+    const pricesArr = apartments.map((a) => a.prices);
+    const retArray = Array(pricesArr[0].length);
+
+    for (let i = 0; i < retArray.length; i++) {
+      const values = pricesArr.map((p) => p[i].price);
+      retArray[i] = { price: Math.round(_.mean(values)), date: pricesArr[0][i].date };
+    }
+
+    return retArray;
+  } catch (e) {
+    console.log(e);
+    return [];
   }
 }

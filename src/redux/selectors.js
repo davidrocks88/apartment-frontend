@@ -1,4 +1,4 @@
-export const getCommunities = state => state.communities.communities;
+export const getCommunities = state => Object.values(state.communities.communities);
 export const getStatus = state => state.communities.status;
 export const getSelectedCommunityId = state => state.communities.selectedCommunityId;
 export const getSelectedCommunity = state => {
@@ -14,20 +14,12 @@ export const getSelectedCommunity = state => {
     return undefined;
   }
 }
-export const getCommunityByIndex = index => state => state.communities.communities[index];
-export const getCommunityById = community_id => state => {
-  const communities = getCommunities(state);
-  if (communities) {
-   const matches = communities.filter(c=>c.id === community_id);
-   if (matches) {
-     return matches[0];
-   }
-  }
-}
+export const getCommunityByIndex = index => state => Object.values(state.communities.communities)[index];
+export const getCommunityById = community_id => state => state.communities.communities[community_id]
 
 export const getApartmentsByCommunityId = community_id => state => {
   if (state.apartments.status === "SUCCESS") {
-    return state.apartments.apartments.filter(a=>a.communityID === community_id)
+    return Object.values(state.apartments.apartments).filter(a=>a.communityID === community_id)
   }
   else return [];
 }

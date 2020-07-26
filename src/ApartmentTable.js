@@ -126,7 +126,7 @@ export default function ApartmentTable() {
               <TableCell align="right">
                 {getSqftString(apartment.size)}
               </TableCell>
-              <TableCell align="right">${apartment.prices[0].price}</TableCell>
+              <TableCell align="right">${apartment.currentPrice.toLocaleString('en-us')}</TableCell>
               <TableCell align="right">
                 <Typography
                   variant="button"

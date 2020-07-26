@@ -18,13 +18,7 @@ const apartmentsSlice = createSlice({
     fetchApartmentsEnd(state, { payload }) {
       const { success, apartments } = payload;
       state.status = success ? "SUCCESS" : "FAILURE";
-      apartments.forEach(
-        (apartment) =>
-          (apartment.prices = apartment.prices.map((p) => {
-            return { price: p.price, date: p.date.toDate() };
-          }))
-      );
-      state.apartments = apartments;
+      apartments.forEach(apartment=>state.apartments[apartment.id] = apartment);
     },
     selectApartment(state, action) {
       state.selectedApartment = action.payload;
